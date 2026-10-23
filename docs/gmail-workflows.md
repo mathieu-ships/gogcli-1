@@ -165,6 +165,30 @@ derived from the original message; explicit values, including empty ones,
 override that selection. Dry-run output reports which headers will be kept
 without fetching the draft.
 
+## Plain-Text Bodies in Gmail Web
+
+gog sends `--body` and `--body-file` as text/plain and preserves long logical
+lines. Gmail web still displays a text/plain-only message with its own line
+break about every 70 characters, so paragraphs break mid-sentence in a wide
+window and wrap again on a phone. Mail written in Gmail's composer always
+carries a text/html alternative, which reflows to the window.
+
+`--html-from-text` adds that alternative when only a plain body is given: the
+plain text, HTML-escaped, with each line break kept as `<br>`. The text/plain
+part is unchanged, and an explicit `--body-html` or `--body-html-file` still
+wins. It applies to `gmail send`, `reply`, `reply-all`, `autoreply`, and
+`drafts create`, `update`, `reply`, and `reply-all`; forwards keep their own
+`--note-html` flags. Set `GOG_GMAIL_HTML_FROM_TEXT=1` to turn it on for every
+one of those commands. Like other compose flags it cannot be combined with
+`--raw-file`; with the environment variable set, pass `--html-from-text=false`
+to send or store an exact RFC822 message.
+
+```bash
+gog --account you@example.com gmail send \
+  --to recipient@example.com --subject "Update" \
+  --body-file update.txt --html-from-text
+```
+
 ## Drafts Sent from Gmail Web
 
 gog preserves long logical lines when building a plain-text draft from `--body`
@@ -183,7 +207,8 @@ gog --account you@example.com gmail drafts create \
 
 This creates an HTML draft; it does not change plain-text MIME behavior. Check
 the draft and recipient-client rendering before relying on the workaround for
-a particular workflow.
+a particular workflow. `--html-from-text` gives a plain `--body` draft the same
+kind of HTML part.
 
 ## Signatures on drafts
 

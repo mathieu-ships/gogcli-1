@@ -2,6 +2,8 @@
 
 ## 0.46.1 - Unreleased
 
+- Gmail: add opt-in `--html-from-text` (or `GOG_GMAIL_HTML_FROM_TEXT`) to generate an escaped HTML alternative for plain send, reply, and draft bodies; preserve plain-text defaults and explicit HTML. (#1251) — thanks @mathieu-ships.
+
 - Auth: make Google Ads (`ads`) an explicit opt-in instead of part of the default `user`/`all-user` set; Google can gate the Ads scope behind mandatory passkey enrollment, which blocked ordinary reauth. Request it with `--services user,ads`.
 - Dependencies: update Pub/Sub, Google API and x/tools plus Cloudflare Workers types and Wrangler; retain Go 1.26 and the tracking worker’s 24-hour release cooldown.
 
